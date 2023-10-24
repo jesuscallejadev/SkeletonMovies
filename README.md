@@ -19,5 +19,6 @@ Skeleton App to showcase MVVM Architectural patterns
 - Pull to refresh
 - Error handling (Ex: No Internet connection)
 
+## Preview 
 
 ![](SkeletonMovies.gif)
