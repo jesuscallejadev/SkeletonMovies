@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FLE-eE-Be5">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--SplashVC-->
+        <scene sceneID="u37-bq-af7">
+            <objects>
+                <viewController storyboardIdentifier="SplashVC" id="FLE-eE-Be5" customClass="SplashVC" customModule="SkeletonMovies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="t6O-vr-LQt">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppLogo" translatesAutoresizingMaskIntoConstraints="NO" id="C4Z-R5-lXq">
+                                <rect key="frame" x="87" y="365" width="240" height="166.5"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yFO-hO-NpC"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="C4Z-R5-lXq" firstAttribute="leading" secondItem="yFO-hO-NpC" secondAttribute="leading" constant="87" id="3OU-Ds-ry6"/>
+                            <constraint firstItem="C4Z-R5-lXq" firstAttribute="centerY" secondItem="t6O-vr-LQt" secondAttribute="centerY" id="6BY-De-PwZ"/>
+                            <constraint firstItem="yFO-hO-NpC" firstAttribute="trailing" secondItem="C4Z-R5-lXq" secondAttribute="trailing" constant="87" id="e5s-R0-BUg"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x8O-Kf-yzL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="236" y="-186"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="AppLogo" width="166.5" height="166.5"/>
+    </resources>
+</document>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Movie DetailVC-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="MovieDetailVC" id="Y6W-OH-hqX" customClass="MovieDetailVC" customModule="SkeletonMovies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LVE-Wx-sZQ" userLabel="posterImageView">
+                                <rect key="frame" x="16" y="83" width="361" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="2Zw-4U-3jZ"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9uj-CF-ltQ">
+                                <rect key="frame" x="16" y="415" width="361" height="379"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Release date: 13/03/2024&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VB6-zM-bmd" userLabel="dateLabel">
+                                        <rect key="frame" x="73.000000000000014" y="0.0" width="215.33333333333337" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="48V-ht-rDF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Title&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJO-2x-IVX" userLabel="titleLabel">
+                                        <rect key="frame" x="151.66666666666666" y="40" width="58" height="83"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Description&gt;" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3s3-mx-vVQ" userLabel="overviewLabel">
+                                        <rect key="frame" x="126.66666666666666" y="139" width="108" height="240"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                        <lineBreakStrategy key="lineBreakStrategy"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="LVE-Wx-sZQ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="0JN-vm-2VM"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="9uj-CF-ltQ" secondAttribute="bottom" constant="24" id="2l6-cv-ga9"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="9uj-CF-ltQ" secondAttribute="trailing" constant="16" id="9hg-b8-9N6"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="LVE-Wx-sZQ" secondAttribute="trailing" constant="16" id="dnQ-SD-VW3"/>
+                            <constraint firstItem="LVE-Wx-sZQ" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="24" id="eef-vB-SEA"/>
+                            <constraint firstItem="9uj-CF-ltQ" firstAttribute="top" secondItem="LVE-Wx-sZQ" secondAttribute="bottom" constant="32" id="hJQ-OV-dJs"/>
+                            <constraint firstItem="9uj-CF-ltQ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="oRg-dT-hs9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dateLabel" destination="VB6-zM-bmd" id="l0E-JP-ouD"/>
+                        <outlet property="overviewLabel" destination="3s3-mx-vVQ" id="sEb-GB-1eJ"/>
+                        <outlet property="posterImageView" destination="LVE-Wx-sZQ" id="MLZ-C0-ETH"/>
+                        <outlet property="titleLabel" destination="fJO-2x-IVX" id="4Sx-gS-G0s"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-19" y="4"/>
+        </scene>
+    </scenes>
+</document>

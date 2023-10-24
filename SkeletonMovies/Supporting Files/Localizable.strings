@@ -1,0 +1,29 @@
+/*
+  Localizable.strings
+  SkeletonMovies
+
+  Created by Jesus Calleja Rodriguez on 13/10/23.
+  
+*/
+
+/* General */
+"app_title" = "Skeleton Movies";
+
+/* Error */
+"no_internet_connection" = "Ops.. You don't have Internet connection.";
+
+
+/* Onboarding */
+"onboarding_first_text" = "Welcome to Skeleton Movies!\nYour ultimate app for discovering and exploring your favorite movies";
+"onboarding_second_text" = "Filter and find movies by title using the search bar";
+"onboarding_third_text" = "Discover the details of your favorite movies!";
+
+/* Movies List */
+"movies_list_loading" = "Loading movies...";
+"movies_list_empty" = "No movies found.";
+"search_movies" = "Search Movies";
+
+/* Movie Detail */
+"release_date" = "Release date: ";
+"unknown" = "Unknown";
+"movie_detail_title" = "Movie Detail";
