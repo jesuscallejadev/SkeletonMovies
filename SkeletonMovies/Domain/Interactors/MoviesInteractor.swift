@@ -23,8 +23,8 @@ extension MoviesInteractorOutput {
 }
 
 protocol MoviesInteractorInput {
-    func loadData(nextPage: String)
-    func onMovieSearch(title: String)
+    func loadData(nextPage: String) async
+    func onMovieSearch(title: String) async
 }
 
 class MoviesInteractor {
@@ -46,76 +46,79 @@ class MoviesInteractor {
     
     // MARK: - Private methods
     
-    private func loadMovies(nextPage: String) {
+    private func loadMovies(nextPage: String) async {
         LogInfo("Load Movies")
         self.output?.updateLoadingSpinner(show: true)
-        self.recoverMovies(nextPage: nextPage)
+        await recoverMovies(nextPage: nextPage)
     }
     
-    private func recoverMovies(nextPage: String) {
+    private func recoverMovies(nextPage: String) async {
         var queryParams: [String: String]? = nil
         if !nextPage.isEmpty {
             queryParams = [
                 Constants.API.page: nextPage
             ]
         }
-        self.services.launchRequest(
-            url: Constants.API.moviesBaseUrl + Constants.API.getMoviesEndpoint,
-            method: .get,
-            header: [
-                Constants.API.token: Constants.API.userTokenValue,
-            ],
-            queryParams: queryParams,
-            requiresRefresh: true
-        ) { [weak self] result in
-            switch result {
-            case .success(let json):
-                self?.output?.updateLoadingSpinner(show: false)
-                let jsonData = json as? Data
-                self?.parseMoviesList(json: jsonData ?? Data())
-                
-            case .error(let error):
-                switch error.type {
+
+        do {
+            let data = try await services.launchRequest(
+                url: Constants.API.moviesBaseUrl + Constants.API.getMoviesEndpoint,
+                method: .get, body: nil,
+                header: [
+                    Constants.API.token: Constants.API.userTokenValue,
+                ],
+                queryParams: queryParams,
+                requiresRefresh: true
+            )
+
+            self.parseMoviesList(json: data)
+        } catch {
+            if let serviceError = error as? ServiceError {
+                switch serviceError.type {
                 case .noInternetcConnection:
-                    self?.output?.noInternetConnection()
+                    self.output?.noInternetConnection()
                 default:
-                    LogWarn("Error recovering movies: \(error.text)")
+                    LogWarn("Error recovering movies: \(serviceError.localizedDescription)")
                 }
+            } else {
+                LogWarn("Error recovering movies: \(error.localizedDescription)")
             }
         }
     }
     
-    private func searchMovies(title: String) {
+    private func searchMovies(title: String) async {
         var queryParams: [String: String]? = nil
         queryParams = [
             Constants.API.query: title
         ]
-        
-        self.services.launchRequest(
-            url: Constants.API.moviesBaseUrl + Constants.API.searchMoviesEndpoint,
-            method: .get,
-            header: [
-                Constants.API.token: Constants.API.userTokenValue,
-            ],
-            queryParams: queryParams,
-            requiresRefresh: true
-        ) { [weak self] result in
-            switch result {
-            case .success(let json):
-                self?.output?.updateLoadingSpinner(show: false)
-                let jsonData = json as? Data
-                self?.parseMoviesList(json: jsonData ?? Data(), filtered: true)
-                
-            case .error(let error):
-                switch error.type {
+
+        do {
+            let data = try await services.launchRequest(
+                url: Constants.API.moviesBaseUrl + Constants.API.searchMoviesEndpoint,
+                method: .get, body: nil,
+                header: [
+                    Constants.API.token: Constants.API.userTokenValue,
+                ],
+                queryParams: queryParams,
+                requiresRefresh: true
+            )
+
+            self.parseMoviesList(json: data)
+            
+        } catch {
+            if let serviceError = error as? ServiceError {
+                switch serviceError.type {
                 case .noInternetcConnection:
-                    self?.output?.noInternetConnection()
+                    self.output?.noInternetConnection()
                 default:
-                    LogWarn("Error recovering movies: \(error.text)")
+                    LogWarn("Error recovering movies: \(serviceError.localizedDescription)")
                 }
+            } else {
+                LogWarn("Error recovering movies: \(error.localizedDescription)")
             }
         }
     }
+
     
     private func parseMoviesList(json: Data, filtered: Bool = false) {
         do {
@@ -130,6 +133,8 @@ class MoviesInteractor {
                 for result in moviesData.results {
                     moviesList.append(MovieView(movie: result))
                 }
+                
+                self.output?.updateLoadingSpinner(show: false)
                 
                 if filtered {
                     self.output?.showFilteredMoviesList(moviesList: moviesList)
@@ -159,12 +164,12 @@ class MoviesInteractor {
 
 extension MoviesInteractor: MoviesInteractorInput {
     
-    func loadData(nextPage: String) {
-        self.loadMovies(nextPage: nextPage)
+    func loadData(nextPage: String) async {
+        await self.loadMovies(nextPage: nextPage)
     }
     
-    func onMovieSearch(title: String) {
-        self.searchMovies(title: title)
+    func onMovieSearch(title: String) async {
+        await self.searchMovies(title: title)
     }
 }
 

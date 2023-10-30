@@ -16,8 +16,8 @@ protocol MovieListVMOutput: AnyObject {
 protocol MovieListVMInput {
     func getMovies()
     func getMoreMovies()
-    func onMovieSelected(movie: MovieView)
     func onMovieSearch(title: String)
+    func onMovieSelected(movie: MovieView)
 }
 
 class MovieListVM {
@@ -41,11 +41,15 @@ class MovieListVM {
     }
     
     private func loadMovies() {
-        self.moviesInteractor.loadData(nextPage: self.nextPage)
+        Task {
+            await self.moviesInteractor.loadData(nextPage: self.nextPage)
+        }
     }
     
     private func searchMovies(title: String) {
-        self.moviesInteractor.onMovieSearch(title: title)
+        Task {
+            await self.moviesInteractor.onMovieSearch(title: title)
+        }
     }
     
     private func loadMoreMovies() {

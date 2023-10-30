@@ -9,14 +9,7 @@ import Foundation
 import UIKit
 
 protocol ServicesManagerInput {
-    func launchRequest(url: String, method: RequestType, body: [String: Any]?, header: [String: Any]?,
-                       queryParams: [String: String]?, requiresRefresh: Bool?, completion: @escaping (DKManagermentResult<Any>) -> Void)
-}
-
-extension ServicesManagerInput {
-    func launchRequest(url: String, method: RequestType, body: [String: Any]? = nil, header: [String: Any]? = nil, queryParams: [String: String]? = nil, requiresRefresh: Bool? = nil, completion: @escaping (DKManagermentResult<Any>) -> Void) {
-        self.launchRequest(url: url, method: method, body: body, header: header, queryParams: queryParams, requiresRefresh: requiresRefresh, completion: completion)
-    }
+    func launchRequest(url: String, method: RequestType, body: [String: Any]?, header: [String: Any]?, queryParams: [String: String]?, requiresRefresh: Bool?) async throws -> Data
 }
 
 enum RequestType: String {
@@ -26,26 +19,16 @@ enum RequestType: String {
     case delete = "DELETE"
 }
 
-enum DKManagermentResult<T> {
-    case success(T)
-    case error(error: ServiceError)
-}
-
 class ServicesManager {
-    
-    // MARK: - Private method
-    
-    private func launchService(url: String, type: RequestType, body: [String: Any]?, header: [String: Any]?, queryParams: [String: String]?, requiresRefresh: Bool?, completion: @escaping (DKManagermentResult<Any>) -> Void) {
-        
+    private func createURLRequest(url: String, method: RequestType, body: [String: Any]?, header: [String: Any]?, queryParams: [String: String]?) throws -> URLRequest {
         guard let url = URL(string: url) else {
-            completion(.error(error: ServiceError(type: .urlNil)))
-            return
+            throw ServiceError(type: .urlNil)
         }
         
         var request = URLRequest(url: url)
         
         if let queryParams = queryParams {
-            let queryItems = queryParams.compactMap { URLQueryItem(name: $0.key, value: $0.value) }
+            let queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
             var components = URLComponents()
             components.scheme = url.scheme
             components.host = url.host
@@ -54,7 +37,7 @@ class ServicesManager {
             request = URLRequest(url: components.url ?? url)
         }
         
-        request.httpMethod = type.rawValue
+        request.httpMethod = method.rawValue
         
         if let header = header {
             if let token = header["token"] {
@@ -66,76 +49,61 @@ class ServicesManager {
             }
         }
         
-        do {
-            if let params = body {
-                request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-                request.httpBody = try JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
+        if let body = body {
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+        }
+        
+        return request
+    }
+    
+    private func handleResponse(data: Data?, response: URLResponse?) throws -> Data {
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+                LogWarn("Status code is nil")
+                throw ServiceError(type: .backendCommunicationError)
             }
+            
+            switch statusCode {
+            case 200...299:
+                if let data = data {
+                    return data
+                } else {
+                    throw ServiceError(type: .dataNil)
+                }
+            default:
+                LogWarn("Service error response: \(String(describing: response))")
+                throw ServiceError(type: .backendCommunicationError)
+            }
+        }
+}
+
+extension ServicesManager: ServicesManagerInput {
+    func launchRequest(url: String, method: RequestType, body: [String: Any]?, header: [String: Any]?, queryParams: [String: String]?, requiresRefresh: Bool?) async throws -> Data {
+        do {
+            let request = try createURLRequest(url: url, method: method, body: body, header: header, queryParams: queryParams)
             
             LogInfo("\n ****** Request ******* \n - Url: \(String(describing: request.url?.absoluteURL)) \n - Type: \(String(describing: request.httpMethod)) \n - Params: \(String(describing: body)) \n - Header: \(String(describing: request.allHTTPHeaderFields)) \n")
             
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                LogInfo(" \n ****** Response ******* \n - Code: \(String(describing: (response as? HTTPURLResponse)?.statusCode)) \n - Url: \(String(describing: request.url?.absoluteURL)) \n - Type: \(String(describing: request.httpMethod))")
-                
-                if let error = error {
-                    if let nsError = error as NSError? {
-                        if nsError.domain == NSURLErrorDomain {
-                            if nsError.code == NSURLErrorNotConnectedToInternet {
-                                LogWarn("There is no internet connection")
-                                completion(.error(error: ServiceError(type: .noInternetcConnection)))
-                            } else {
-                                LogWarn("Network error: \(error.localizedDescription)")
-                            }
-                        } else {
-                            LogWarn("Service error: \(error.localizedDescription)")
-                            completion(.error(error: ServiceError(type: .error(error: error))))
-                        }
-                    }
-                    
-                } else {
-                    guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
-                        LogWarn("Status code is nil")
-                        completion(.error(error: ServiceError(type: .backendCommunicationError)))
-                        return
-                    }
-                    switch statusCode {
-                        
-                    case 200...299:
-                        guard let data = data else {
-                            completion(.error(error: ServiceError(type: .dataNil)))
-                            return
-                        }
-                        completion(.success(data))
-                        
-                    default:
-                        LogWarn("Service error response: \(String(describing: response))")
-                        completion(.error(error: ServiceError(type: .backendCommunicationError)))
-                    }
-                }
-            }
-            task.resume()
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            LogInfo(" \n ****** Response ******* \n - Code: \(String(describing: (response as? HTTPURLResponse)?.statusCode)) \n - Url: \(String(describing: request.url?.absoluteURL)) \n - Type: \(String(describing: request.httpMethod))")
+            
+            return try handleResponse(data: data, response: response)
         } catch {
-            completion(.error(error: ServiceError(type: .errorParams)))
-        }
-    }
-}
-
-// MARK: - ServicesManagerInput
-
-extension ServicesManager: ServicesManagerInput {
-    
-    func launchRequest(url: String, method: RequestType, body: [String: Any]? = nil, header: [String: Any]? = nil, queryParams: [String: String]? = nil, requiresRefresh: Bool? = false, completion: @escaping (DKManagermentResult<Any>) -> Void) {
-        self.launchService(url: url, type: method, body: body, header: header, queryParams: queryParams, requiresRefresh: requiresRefresh) { result in
-            switch result {
-            case .success(let data):
-                guard let data = data as? Data else {
-                    completion(.error(error: ServiceError(type: .dataNil)))
-                    return
+            if let nsError = error as NSError? {
+                if nsError.domain == NSURLErrorDomain {
+                    if nsError.code == NSURLErrorNotConnectedToInternet {
+                        LogWarn("There is no internet connection")
+                        throw ServiceError(type: .noInternetcConnection)
+                    } else {
+                        LogWarn("Network error: \(error.localizedDescription)")
+                    }
+                } else {
+                    LogWarn("Service error: \(error.localizedDescription)")
+                    throw ServiceError(type: .error(error: error))
                 }
-                completion(.success(data))
-            case .error(let error):
-                completion(.error(error: error))
             }
+            throw error
         }
     }
 }
