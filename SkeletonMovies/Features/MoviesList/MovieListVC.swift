@@ -113,9 +113,12 @@ extension MovieListVC: UITableViewDelegate, UITableViewDataSource {
         cell?.loadAsyncImageData(imagePosterUrl: movie.imagePosterUrl) { imageData in
             if let imageData = imageData {
                 DispatchQueue.main.async {
-                    cell?.posterImageView.image = UIImage(data: imageData)
+                    if indexPath.row < self.filteredMovies.count {
+                        cell?.posterImageView.image = UIImage(data: imageData)
+                        self.filteredMovies[indexPath.row].imagePosterData = imageData
+                    }
                 }
-                self.filteredMovies[indexPath.row].imagePosterData = imageData
+                
             }
         }
         return cell ?? UITableViewCell()
