@@ -87,22 +87,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "57014985-FE95-4FC4-8D91-AB2B6E0EC145"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SkeletonMovies/Domain/Interactors/MoviesInteractor.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "recoverMovies(nextPage:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "0AFD3C43-AA79-4C4F-AFB1-8A21D5E3908D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -119,17 +103,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C0E98ECD-2702-44C3-859F-BF2AD1FAE268"
+            uuid = "D8150F78-1213-4443-8443-52121722907A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SkeletonMovies/Features/MoviesList/MovieListVM.swift"
+            filePath = "SkeletonMovies/Features/MovieDetail/MovieDetailVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "updateLoadingSpinner(show:)"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "showMovieDetails(movie:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3ECBA9ED-B662-40BC-BDEE-B01E41FE9B28"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SkeletonMovies/Features/MovieDetail/MovieDetailVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "showMovieDetails(movie:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3ECBA9ED-B662-40BC-BDEE-B01E41FE9B28 - 7b97f83b5c3f7ec9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in SkeletonMovies.MovieDetailVC.showMovieDetails(movie: SkeletonMovies.MovieView) -&gt; ()"
+                  moduleName = "SkeletonMovies"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jesuscallejarodriguez/Documents/Repositories/SkeletonMovies/SkeletonMovies/Features/MovieDetail/MovieDetailVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "1708">
+               </Location>
+               <Location
+                  uuid = "3ECBA9ED-B662-40BC-BDEE-B01E41FE9B28 - 7b97f83b5c3f7d28"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in SkeletonMovies.MovieDetailVC.showMovieDetails(movie: SkeletonMovies.MovieView) -&gt; ()"
+                  moduleName = "SkeletonMovies"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jesuscallejarodriguez/Documents/Repositories/SkeletonMovies/SkeletonMovies/Features/MovieDetail/MovieDetailVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "70"
+                  endingLineNumber = "70"
+                  offsetFromSymbolStart = "1696">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

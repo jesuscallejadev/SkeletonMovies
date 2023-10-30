@@ -78,7 +78,7 @@ class MoviesInteractor {
                 case .noInternetcConnection:
                     self?.output?.noInternetConnection()
                 default:
-                   LogWarn("Error recovering movies: \(error.text)")
+                    LogWarn("Error recovering movies: \(error.text)")
                 }
             }
         }
@@ -109,7 +109,7 @@ class MoviesInteractor {
                 case .noInternetcConnection:
                     self?.output?.noInternetConnection()
                 default:
-                   LogWarn("Error recovering movies: \(error.text)")
+                    LogWarn("Error recovering movies: \(error.text)")
                 }
             }
         }
@@ -126,29 +126,13 @@ class MoviesInteractor {
                 let group = DispatchGroup()
                 
                 for result in movie.results {
-                    if let posterImageURL = URL(string: Constants.API.imagesBaseUrl + result.posterPath) {
-                        group.enter()
-                        
-                        URLSession.shared.dataTask(with: posterImageURL) { (data, response, error) in
-                            defer {
-                                group.leave()
-                            }
-                            
-                            if let imageData = data {
-                                let movie = MovieView(movie: result, imageData: imageData)
-                                moviesList.append(movie)
-                            }
-                        }.resume()
-                    }
+                    moviesList.append(MovieView(movie: result))
                 }
                 
-                group.notify(queue: .main) {
-                    
-                    if filtered {
-                        self.output?.showFilteredMoviesList(moviesList: moviesList)
-                    } else {
-                        self.updatePagination(moviesList: moviesList)
-                    }
+                if filtered {
+                    self.output?.showFilteredMoviesList(moviesList: moviesList)
+                } else {
+                    self.updatePagination(moviesList: moviesList)
                 }
             }
         }

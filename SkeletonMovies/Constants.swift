@@ -55,6 +55,7 @@ class Constants {
     
     struct Images {
         static let search = "search"
+        static let moviePlaceholder = "moviePlaceholder"
     }
     
 }

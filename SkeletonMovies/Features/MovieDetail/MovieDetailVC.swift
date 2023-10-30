@@ -34,6 +34,20 @@ class MovieDetailVC: BaseVC {
         self.title = Localize().get("movie_detail_title")
     }
     
+    private func loadAsyncImage(imagePosterUrl: String) {
+        if let imageURL = URL(string: Constants.API.imagesBaseUrl + imagePosterUrl) {
+            let task = URLSession.shared.dataTask(with: imageURL) { [weak self] (data, _, error) in
+                guard let data = data, error == nil, let image = UIImage(data: data) else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    self?.posterImageView.image = image
+                }
+            }
+            task.resume()
+        }
+    }
+    
 }
 
 // MARK: - MovieListVMOutput
@@ -46,8 +60,14 @@ extension MovieDetailVC: MovieDetailVMOutput {
             let releaseDateValue = movie.releaseDate.isEmpty ? Localize().get("movie_no_date") : movie.releaseDate
             self.dateLabel.text = Localize().get("release_date") + releaseDateValue
             self.overviewLabel.text = movie.overview
-            let posterImage = UIImage(data: movie.imageData)
-            self.posterImageView.image = posterImage
+           
+            if let imagePosterData = movie.imagePosterData {
+                self.posterImageView.image = UIImage(data: imagePosterData)
+            } else {
+                let moviePlaceholder = UIImage(named: Constants.Images.moviePlaceholder)
+                self.posterImageView.image = moviePlaceholder
+                self.loadAsyncImage(imagePosterUrl: movie.imagePosterUrl)
+            }
         }
     }
 }
