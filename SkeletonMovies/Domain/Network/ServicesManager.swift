@@ -128,12 +128,11 @@ extension ServicesManager: ServicesManagerInput {
         self.launchService(url: url, type: method, body: body, header: header, queryParams: queryParams, requiresRefresh: requiresRefresh) { result in
             switch result {
             case .success(let data):
-                guard let data = data as? Data, let text = String(data: data, encoding: .utf8) else {
+                guard let data = data as? Data else {
                     completion(.error(error: ServiceError(type: .dataNil)))
                     return
                 }
-                let json = JSONSerialize.parser(string: text)
-                completion(.success(json))
+                completion(.success(data))
             case .error(let error):
                 completion(.error(error: error))
             }

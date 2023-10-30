@@ -17,7 +17,7 @@ struct MovieView {
     
     // MARK: - Constructors (DTO Data to View)
     
-    init(movie: Movie.MovieResult) {
+    init(movie: MovieResultData) {
         self.title = movie.title
         self.releaseDate = movie.releaseDate
         self.overview = movie.overview

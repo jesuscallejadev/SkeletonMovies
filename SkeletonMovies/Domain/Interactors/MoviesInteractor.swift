@@ -17,7 +17,7 @@ protocol MoviesInteractorOutput: AnyObject {
 
 extension MoviesInteractorOutput {
     func updateLoadingSpinner(show: Bool) {}
-    func showMoviesList(moviesList: [Movie], nextPage: String) {}
+    func showMoviesList(moviesList: [MovieView], nextPage: String) {}
     func onEmptyMovies() {}
     func noInternetConnection() {}
 }
@@ -71,7 +71,8 @@ class MoviesInteractor {
             switch result {
             case .success(let json):
                 self?.output?.updateLoadingSpinner(show: false)
-                self?.parseMoviesList(json: json)
+                let jsonData = json as? Data
+                self?.parseMoviesList(json: jsonData ?? Data())
                 
             case .error(let error):
                 switch error.type {
@@ -102,7 +103,8 @@ class MoviesInteractor {
             switch result {
             case .success(let json):
                 self?.output?.updateLoadingSpinner(show: false)
-                self?.parseMoviesList(json: json, filtered: true)
+                let jsonData = json as? Data
+                self?.parseMoviesList(json: jsonData ?? Data(), filtered: true)
                 
             case .error(let error):
                 switch error.type {
@@ -115,17 +117,17 @@ class MoviesInteractor {
         }
     }
     
-    private func parseMoviesList(json: Any, filtered: Bool = false) {
-        if let data = json as? [String: Any], let movie = Movie(data: data) {
-            LogInfo("Total pages: \(movie.totalPages)")
+    private func parseMoviesList(json: Data, filtered: Bool = false) {
+        do {
+            let decoder = JSONDecoder()
+            let moviesData = try decoder.decode(MoviesData.self, from: json)
             
-            if movie.results.isEmpty {
+            if moviesData.results.isEmpty {
                 self.output?.onEmptyMovies()
             } else {
                 var moviesList = [MovieView]()
-                let group = DispatchGroup()
                 
-                for result in movie.results {
+                for result in moviesData.results {
                     moviesList.append(MovieView(movie: result))
                 }
                 
@@ -135,6 +137,9 @@ class MoviesInteractor {
                     self.updatePagination(moviesList: moviesList)
                 }
             }
+            
+        } catch {
+            LogWarn("Error decoding JSON: \(error)")
         }
     }
     
