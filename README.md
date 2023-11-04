@@ -6,6 +6,7 @@ Skeleton App to showcase MVVM Architectural patterns
 - Programmatic navigation divided by sections (Routers).
 - Package management through SPM.
 - Dependency injection.
+- Async/Await.
 - Separate Interactors, Services, Viewmodels, and Views on different StoryBoards.
 - Localized texts to facilitate the addition of new languages.
 - Interface written in UIKit.
